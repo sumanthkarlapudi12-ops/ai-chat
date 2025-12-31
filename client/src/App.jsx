@@ -4,7 +4,9 @@ import { marked } from 'marked';
 import './App.css'
 
 const sessionId = uuid();
-const API_URL = "http://localhost:5000/chat";
+// const API_URL = "http://localhost:5000/chat";
+const API_URL = `${import.meta.env.VITE_API_URL}/chat`;
+
 
 // Configure marked for better code block rendering
 marked.setOptions({
