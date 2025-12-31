@@ -6,7 +6,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// Configure CORS to handle preflight requests
+app.use(cors({
+  origin: '*', // Allow all origins (or specify your frontend URL)
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
+// Explicitly handle OPTIONS preflight requests
+app.options('*', cors());
+
 app.use(express.json());
 
 const conversations = {}; // session memory
