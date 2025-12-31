@@ -8,15 +8,24 @@ dotenv.config();
 const app = express();
 
 // Configure CORS to handle preflight requests
-app.use(cors({
-  origin: '*', // Allow all origins (or specify your frontend URL)
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    // Allow all origins in development/production
+    callback(null, true);
+  },
+  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: false, // Set to false when allowing all origins
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // Explicitly handle OPTIONS preflight requests
-app.options('*', cors());
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
